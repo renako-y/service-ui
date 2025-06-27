@@ -102,18 +102,20 @@ export const ExpandedOptions = () => {
           </ScrollWrapper>
         </div>
       </div>
-      <div className={cx('expanded-options__content')}>
-        {isEmptyFolder || !hasTestCases ? (
-          <FolderEmptyState />
-        ) : (
-          <AllTestCasesPage
-            testCases={filteredTestCases}
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            loading={loading}
-          />
-        )}
-      </div>
+      <ScrollWrapper>
+        <div className={cx('expanded-options__content')}>
+          {isEmptyFolder || !hasTestCases ? (
+            <FolderEmptyState />
+          ) : (
+            <AllTestCasesPage
+              testCases={filteredTestCases}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              loading={loading}
+            />
+          )}
+        </div>
+      </ScrollWrapper>
     </div>
   );
 };

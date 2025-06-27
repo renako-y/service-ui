@@ -19,4 +19,4 @@ export { showModalAction, hideModalAction, confirmModalAction } from './actionCr
 export { modalReducer } from './reducer';
 export { activeModalSelector } from './selectors';
 export { getModal, addModal } from './modalsMap';
-export { withModal } from './withModal';
+export { withModal, registerModal } from './withModal';

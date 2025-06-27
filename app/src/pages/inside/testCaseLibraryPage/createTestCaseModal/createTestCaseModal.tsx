@@ -16,14 +16,14 @@
 
 import { useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { reduxForm, InjectedFormProps } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import classNames from 'classnames/bind';
 import { Modal } from '@reportportal/ui-kit';
 
 import { COMMON_LOCALE_KEYS } from 'common/constants/localization';
-import { hideModalAction, withModal } from 'controllers/modal';
+import { hideModalAction, registerModal } from 'controllers/modal';
 import { commonValidators } from 'common/utils/validation';
+import { TestCasePriority } from 'pages/inside/common/priorityIcon/types';
 
 import { BasicInformation } from './basicInformation';
 import { TestCaseDetails, StepData } from './testCaseDetails';
@@ -38,7 +38,7 @@ export const CREATE_TEST_CASE_MODAL_KEY = 'createTestCaseModalKey';
 interface CreateTestCaseFormValues {
   testCaseName: string;
   folder: string;
-  priority: 'unspecified' | 'low' | 'medium' | 'high' | 'critical' | 'blocker';
+  priority: TestCasePriority;
   description: string;
   template: 'steps' | 'text';
   requirementsLink: string;
@@ -52,53 +52,43 @@ interface CreateTestCaseModalProps {
   };
 }
 
-export const CreateTestCaseModal = ({
-  data: { onSubmit },
-  handleSubmit,
-  initialize,
-}: CreateTestCaseModalProps &
-  InjectedFormProps<CreateTestCaseFormValues, CreateTestCaseModalProps>) => {
-  const { formatMessage } = useIntl();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    initialize({
+registerModal(CREATE_TEST_CASE_MODAL_KEY)(
+  reduxForm<CreateTestCaseFormValues, CreateTestCaseModalProps>({
+    form: 'create-test-case-modal-form',
+    initialValues: {
       priority: 'unspecified',
       template: 'steps',
       executionTime: 5,
-    });
-  }, [initialize]);
-
-  const okButton = {
-    children: formatMessage(COMMON_LOCALE_KEYS.CREATE),
-    onClick: handleSubmit(onSubmit),
-  };
-
-  return (
-    <Modal
-      title={formatMessage(commonMessages.createTestCase)}
-      okButton={okButton}
-      className={cx('create-test-case-modal')}
-      cancelButton={{ children: formatMessage(COMMON_LOCALE_KEYS.CANCEL) }}
-      scrollable
-      onClose={() => dispatch(hideModalAction())}
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={cx('create-test-case-modal__container')}>
-          <BasicInformation />
-          <TestCaseDetails />
-        </div>
-      </form>
-    </Modal>
-  );
-};
-
-withModal(CREATE_TEST_CASE_MODAL_KEY)(
-  reduxForm<CreateTestCaseFormValues, CreateTestCaseModalProps>({
-    form: 'create-test-case-modal-form',
+    },
     validate: ({ testCaseName, folder }) => ({
       testCaseName: commonValidators.requiredField(testCaseName),
       folder: commonValidators.requiredField(folder),
     }),
-  })(CreateTestCaseModal),
+  })(({ data: { onSubmit }, handleSubmit }) => {
+    const { formatMessage } = useIntl();
+    const dispatch = useDispatch();
+
+    const okButton = {
+      children: formatMessage(COMMON_LOCALE_KEYS.CREATE),
+      onClick: handleSubmit(onSubmit),
+    };
+
+    return (
+      <Modal
+        title={formatMessage(commonMessages.createTestCase)}
+        okButton={okButton}
+        className={cx('create-test-case-modal')}
+        cancelButton={{ children: formatMessage(COMMON_LOCALE_KEYS.CANCEL) }}
+        scrollable
+        onClose={() => dispatch(hideModalAction())}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className={cx('create-test-case-modal__container')}>
+            <BasicInformation />
+            <TestCaseDetails />
+          </div>
+        </form>
+      </Modal>
+    );
+  }),
 );
