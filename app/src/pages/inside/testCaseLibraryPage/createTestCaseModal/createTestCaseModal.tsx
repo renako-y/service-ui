@@ -36,14 +36,16 @@ const cx = classNames.bind(styles);
 export const CREATE_TEST_CASE_MODAL_KEY = 'createTestCaseModalKey';
 
 interface CreateTestCaseFormValues {
-  testCaseName: string;
+  name: string;
   folder: string;
   priority: 'unspecified' | 'low' | 'medium' | 'high' | 'critical' | 'blocker';
   description: string;
-  template: 'steps' | 'text';
-  requirementsLink: string;
-  executionTime: number;
+  manualScenarioType: 'STEPS' | 'TEXT';
+  linkToRequirements: string;
+  executionEstimationTime: number;
+  preconditions: string;
   steps: StepData[];
+  tags: Array<{ value: string; attributeId?: number | null }>;
 }
 
 interface CreateTestCaseModalProps {
@@ -64,8 +66,8 @@ export const CreateTestCaseModal = ({
   useEffect(() => {
     initialize({
       priority: 'unspecified',
-      template: 'steps',
-      executionTime: 5,
+      manualScenarioType: 'STEPS',
+      executionEstimationTime: 5,
     });
   }, [initialize]);
 
@@ -96,8 +98,8 @@ export const CreateTestCaseModal = ({
 withModal(CREATE_TEST_CASE_MODAL_KEY)(
   reduxForm<CreateTestCaseFormValues, CreateTestCaseModalProps>({
     form: 'create-test-case-modal-form',
-    validate: ({ testCaseName, folder }) => ({
-      testCaseName: commonValidators.requiredField(testCaseName),
+    validate: ({ name, folder }) => ({
+      name: commonValidators.requiredField(name),
       folder: commonValidators.requiredField(folder),
     }),
   })(CreateTestCaseModal),

@@ -37,4 +37,12 @@ export const commonMessages = defineMessages({
     id: 'TestCaseLibraryPage.folders',
     defaultMessage: 'Folders',
   },
+  testCaseCreatedSuccess: {
+    id: 'TestCaseLibraryPage.testCaseCreatedSuccess',
+    defaultMessage: 'Test case created successfully',
+  },
+  testCaseCreationFailed: {
+    id: 'TestCaseLibraryPage.testCaseCreationFailed',
+    defaultMessage: 'Failed to create test case',
+  },
 });

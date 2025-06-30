@@ -59,12 +59,12 @@ export const Template = () => {
 
   const templateOptions = [
     {
-      value: 'steps',
+      value: 'STEPS',
       label: formatMessage(messages.steps),
       description: formatMessage(messages.idealForDetailed),
     },
     {
-      value: 'text',
+      value: 'TEXT',
       label: formatMessage(messages.text),
       description: formatMessage(messages.idealForSimple),
     },
@@ -72,7 +72,7 @@ export const Template = () => {
 
   return (
     <div className={cx('template')}>
-      <FieldProvider name="template">
+      <FieldProvider name="manualScenarioType">
         <DropdownWithDescription
           label={formatMessage(messages.template)}
           selectedItem={templateOptions[0]}
@@ -81,7 +81,7 @@ export const Template = () => {
           onChange={noop}
         />
       </FieldProvider>
-      <FieldProvider name="executionTime">
+      <FieldProvider name="executionEstimationTime">
         <FieldNumber label={formatMessage(messages.executionTime)} onChange={noop} />
       </FieldProvider>
     </div>

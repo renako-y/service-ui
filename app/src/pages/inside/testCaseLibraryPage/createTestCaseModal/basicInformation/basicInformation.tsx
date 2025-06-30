@@ -35,7 +35,7 @@ export const BasicInformation = () => {
 
   return (
     <div className={cx('basic-information')}>
-      <FieldProvider name="testCaseName" placeholder={formatMessage(messages.enterNameForTestCase)}>
+      <FieldProvider name="name" placeholder={formatMessage(messages.enterNameForTestCase)}>
         <FieldErrorHint provideHint={false} className={cx('basic-information__field')}>
           <FieldText label={formatMessage(messages.testCaseName)} defaultWidth={false} isRequired />
         </FieldErrorHint>

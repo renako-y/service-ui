@@ -21,45 +21,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NumerableBlock } from 'pages/common/numerableBlock';
 import { EmptyStatePage } from 'pages/inside/common/emptyStatePage';
 import { referenceDictionary } from 'common/utils';
-import { TEST_CASE_DETAILS_PAGE } from 'controllers/pages/constants';
-import { urlOrganizationAndProjectSelector } from 'controllers/pages';
-
+import { projectKeySelector } from 'controllers/project';
+import { fetch } from 'common/utils/fetch';
+import {
+  CREATE_TEST_CASE_MODAL_KEY,
+  useCreateTestCase,
+} from 'pages/inside/testCaseLibraryPage/createTestCaseModal';
+import { showModalAction } from 'controllers/modal';
 import ImportIcon from 'common/img/import-thin-inline.svg';
-import { hideModalAction, showModalAction } from 'controllers/modal';
-import { CREATE_TEST_CASE_MODAL_KEY } from 'pages/inside/testCaseLibraryPage/createTestCaseModal';
+
+import { CreateTestCaseFormData } from 'pages/inside/testCaseLibraryPage/createTestCaseModal/useCreateTestCase';
 import { messages } from '../messages';
 import { commonMessages } from '../../commonMessages';
 
 export const MainPageEmptyState = () => {
   const { formatMessage } = useIntl();
   const dispatch = useDispatch();
-  const { organizationSlug, projectSlug } = useSelector(urlOrganizationAndProjectSelector);
+  const projectKey = useSelector(projectKeySelector);
+  const { createTestCase, isCreateTestCaseLoading } = useCreateTestCase();
 
-  const handleCreateTestCaseModalSubmit = (formValues) => {
-    // eslint-disable-next-line no-console
-    console.log('Form submitted with values:', formValues);
-    dispatch(hideModalAction());
-    dispatch({
-      type: TEST_CASE_DETAILS_PAGE,
-      payload: {
-        // temporary - will be replaced with actual ID generation
-        testCaseSlug: 'new',
-        organizationSlug,
-        projectSlug,
-      },
-    });
-  };
-
-  const openCreateTestCaseModal = () => {
+  const showCreateTestCaseModal = () => {
     dispatch(
       showModalAction({
         id: CREATE_TEST_CASE_MODAL_KEY,
         data: {
-          onSubmit: handleCreateTestCaseModalSubmit,
+          onSubmit: ({ name, description }: CreateTestCaseFormData) => {
+            createTestCase({
+              name,
+              description,
+              testFolderId: 1234232,
+              priority: undefined,
+              manualScenarioType: 'STEPS',
+            });
+          },
         },
         component: null,
       }),
     );
+  };
+
+  const handleTempFolderCall = async () => {
+    try {
+      console.log('Making POST call to folder endpoint...');
+      const response = await fetch(`/api/project/${projectKey}/tms/folder`, {
+        method: 'post',
+        data: {
+          name: 'Superadmin super folder',
+          description: 'Superadmin super folder',
+        },
+      });
+      console.log('Folder response:', response);
+    } catch (error) {
+      console.error('Folder call failed:', error);
+    }
   };
 
   const benefits = [
@@ -80,7 +94,8 @@ export const MainPageEmptyState = () => {
             name: formatMessage(commonMessages.createTestCase),
             dataAutomationId: 'createTestCaseButton',
             isCompact: true,
-            handleButton: openCreateTestCaseModal,
+            handleButton: showCreateTestCaseModal,
+            isDisabled: isCreateTestCaseLoading,
           },
           {
             name: formatMessage(messages.importTestCases),
@@ -88,6 +103,14 @@ export const MainPageEmptyState = () => {
             variant: 'ghost',
             icon: ImportIcon,
             isCompact: true,
+          },
+          // TEMPORARY BUTTON - will be removed
+          {
+            name: 'TEMP: Test Folder API',
+            dataAutomationId: 'tempFolderButton',
+            variant: 'danger',
+            isCompact: true,
+            handleButton: handleTempFolderCall,
           },
         ]}
       />

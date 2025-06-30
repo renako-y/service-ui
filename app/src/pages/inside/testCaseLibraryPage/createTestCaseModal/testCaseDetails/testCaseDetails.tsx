@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { FieldText } from '@reportportal/ui-kit';
 import classNames from 'classnames/bind';
-import isNumber from 'lodash.isnumber';
 
 import { FieldErrorHint, FieldProvider } from 'components/fields';
 import { Template } from './template';
@@ -47,7 +46,7 @@ export const TestCaseDetails = () => {
     setSteps((prevState) => {
       const newStep = createEmptyStep();
 
-      if (isNumber(index)) {
+      if (typeof index === 'number') {
         return [...prevState.slice(0, index + 1), newStep, ...prevState.slice(index + 1)];
       }
 
@@ -61,8 +60,8 @@ export const TestCaseDetails = () => {
   return (
     <div className={cx('test-case-details')}>
       <Template />
-      <FieldProvider name="requirementsLink" placeholder={formatMessage(messages.enterLink)}>
-        <FieldErrorHint provideHint={false}>
+      <FieldProvider name="linkToRequirements" placeholder={formatMessage(messages.enterLink)}>
+        <FieldErrorHint provideHint={false} className={cx('__field')}>
           <FieldText label={formatMessage(messages.requirementsLink)} defaultWidth={false} />
         </FieldErrorHint>
       </FieldProvider>
