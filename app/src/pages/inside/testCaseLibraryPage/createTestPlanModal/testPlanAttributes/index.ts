@@ -14,7 +14,4 @@
  * limitations under the License.
  */
 
-export { TestCaseLibraryPage } from './testCaseLibraryPage';
-export { TestCaseDetailsPage } from './testCaseDetailsPage';
-export { CreateTestPlanModal, CREATE_TEST_PLAN_MODAL_KEY } from './createTestPlanModal';
-export { commonMessages } from './commonMessages';
+export { TestPlanAttributes } from './testPlanAttributes';

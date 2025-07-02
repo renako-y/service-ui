@@ -25,6 +25,10 @@ export const commonMessages = defineMessages({
     id: 'TestCaseLibraryPage.createTestCase',
     defaultMessage: 'Create Test Case',
   },
+  createTestPlan: {
+    id: 'TestCaseLibraryPage.createTestPlan',
+    defaultMessage: 'Create Test Plan',
+  },
   createFolder: {
     id: 'TestCaseLibraryPage.createFolder',
     defaultMessage: 'Create Folder',

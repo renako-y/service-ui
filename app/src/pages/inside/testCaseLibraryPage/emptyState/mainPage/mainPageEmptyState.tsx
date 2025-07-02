@@ -21,10 +21,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NumerableBlock } from 'pages/common/numerableBlock';
 import { EmptyStatePage } from 'pages/inside/common/emptyStatePage';
 import { CREATE_TEST_CASE_MODAL_KEY } from 'pages/inside/testCaseLibraryPage/createTestCaseModal';
+import { CREATE_TEST_PLAN_MODAL_KEY } from 'pages/inside/testCaseLibraryPage/createTestPlanModal';
 import { TEST_CASE_DETAILS_PAGE } from 'controllers/pages/constants';
 import { urlOrganizationAndProjectSelector } from 'controllers/pages';
 import { hideModalAction, showModalAction } from 'controllers/modal';
 import { referenceDictionary } from 'common/utils';
+
+// Import to ensure modal registration
+import 'pages/inside/testCaseLibraryPage/createTestPlanModal/createTestPlanModal';
 
 import { messages } from '../messages';
 import { commonMessages } from '../../commonMessages';
@@ -49,12 +53,31 @@ export const MainPageEmptyState = () => {
     });
   };
 
+  const handleCreateTestPlanModalSubmit = (formValues) => {
+    // eslint-disable-next-line no-console
+    console.log('Test Plan form submitted with values:', formValues);
+    dispatch(hideModalAction());
+    // TODO: Navigate to test plan details or handle as needed
+  };
+
   const openCreateTestCaseModal = () => {
     dispatch(
       showModalAction({
         id: CREATE_TEST_CASE_MODAL_KEY,
         data: {
           onSubmit: handleCreateTestCaseModalSubmit,
+        },
+        component: null,
+      }),
+    );
+  };
+
+  const openCreateTestPlanModal = () => {
+    dispatch(
+      showModalAction({
+        id: CREATE_TEST_PLAN_MODAL_KEY,
+        data: {
+          onSubmit: handleCreateTestPlanModalSubmit,
         },
         component: null,
       }),
@@ -86,6 +109,13 @@ export const MainPageEmptyState = () => {
             isCompact: true,
             variant: 'ghost',
             handleButton: openCreateTestCaseModal,
+          },
+          {
+            name: formatMessage(commonMessages.createTestPlan),
+            dataAutomationId: 'createTestPlanButton',
+            isCompact: true,
+            variant: 'ghost',
+            handleButton: openCreateTestPlanModal,
           },
         ]}
       />

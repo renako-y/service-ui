@@ -14,7 +14,22 @@
  * limitations under the License.
  */
 
-export { TestCaseLibraryPage } from './testCaseLibraryPage';
-export { TestCaseDetailsPage } from './testCaseDetailsPage';
-export { CreateTestPlanModal, CREATE_TEST_PLAN_MODAL_KEY } from './createTestPlanModal';
-export { commonMessages } from './commonMessages';
+.test-plan-attributes {
+  //display: flex;
+  //flex-direction: column;
+  //flex: 1;
+  //gap: 16px;
+  //
+  //&__title {
+  //  font-weight: 600;
+  //  font-size: 14px;
+  //  line-height: 20px;
+  //  color: #464547;
+  //}
+  //
+  //&__content {
+  //  display: flex;
+  //  flex-direction: column;
+  //  gap: 8px;
+  //}
+}
